@@ -17,7 +17,7 @@ const taskSlice = createSlice(
         // ici, nous stockons nos fonctions
         // state : pour accéder à nos tasks et counterTask
         // action : élément envoyé à notre store {type: "task/addTask", payload } => cela est géré en arrière plan
-        // payload : est un objet contenant les paramètres de la fonction (on passe par action et le payload pour appeler l'argument que l'on passe dans notre fonction)
+        // payload : est un objet contenant les paramètres de la fonction (on passe par action et le payload pour appeler l'argument que l'on passe dans notre fonction) 
             addTask: (state, action) => { 
                 const newTask = {
                     id: Date.now(),
