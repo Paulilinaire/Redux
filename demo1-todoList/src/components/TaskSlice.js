@@ -11,7 +11,7 @@ const taskSlice = createSlice(
                 { id: 1, text: "Faire les courses", done: false },
                 { id: 2, text: "Faire le menage", done: true },
             ],
-            counterTask: 0
+            counterTask: 1
         },
         reducers: { 
         // ici, nous stockons nos fonctions
