@@ -1,8 +1,10 @@
 import { useDispatch } from "react-redux";
 import { deleteProduct, editProduct } from "./productSlice";
+import { useRef, useState } from "react";
 
 const ProductItem = (props) => {
     const product = props.product
+
     const dispatch = useDispatch()
 
     return ( 

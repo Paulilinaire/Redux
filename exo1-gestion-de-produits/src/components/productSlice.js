@@ -15,11 +15,10 @@ const productSlice = createSlice({
             state.products = state.products.filter(product => product.id !== action.payload)
         },
         editProduct: (state, action) => {
-            const product = state.products.find(product => product.id === action.payload)
-            if (product){
-                product.name = name;
-                product.price = price;
-            }
+            const newproductlist = state.products.map((p => p.id === action.payload.id ? {id: p.id,name: action.payload.name, price: action.payload.price} : p))
+            console.log(newproductlist);
+            state.products = newproductlist
+            console.table(state.products);
         }    
     }
 })
