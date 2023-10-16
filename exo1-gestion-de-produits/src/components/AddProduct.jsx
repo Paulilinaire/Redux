@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef} from "react";
 import { useDispatch } from "react-redux";
 import { addProduct } from "./productSlice";
 
@@ -24,16 +24,16 @@ const AddProduct = () => {
         <>
             <form action="#" onSubmit={handleSubmit}>
                 <h1 className="text-center mb-3">Ajouter un produit</h1>
-                <div className="col text-center mb-3">
+                <div className="row m-1 text-center">
                     <label htmlFor="productName" className="text-center">Nom du produit:</label><br />
-                    <input className= "text-center" type="text" id= "productName" ref={nameRef} />
+                    <input className= "form-control text-center" type="text" id= "productName" ref={nameRef} required />
                 </div>
-                <div className="col text-center mb-3">
+                <div className="row m-1 text-center">
                     <label htmlFor="productPrice" className="text-center">Prix du produit:</label><br />
-                    <input className="text-center" type="text"  id= "productPrice" ref={priceRef} />
+                    <input className="form-control text-center" type="number"  id= "productPrice" ref={priceRef} required />
                 </div>
                 <div className="row">
-                    <button className="btn btn-success mt-3">Submit</button>
+                    <button className="btn btn-success mt-3">Ajouter</button>
                 </div>
             </form>
         </>

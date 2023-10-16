@@ -14,14 +14,17 @@ const productSlice = createSlice({
         deleteProduct: (state, action) => {
             state.products = state.products.filter(product => product.id !== action.payload)
         },
-        editProduct: (state, action) => {
-            const newproductlist = state.products.map((p => p.id === action.payload.id ? {id: p.id,name: action.payload.name, price: action.payload.price} : p))
-            console.log(newproductlist);
-            state.products = newproductlist
-            console.table(state.products);
+        updateProduct: (state, action) => {
+            const index = state.products.findIndex(product => product.id === action.payload.id)
+            if (index !== -1) {
+                state.products[index] = action.payload
+             }
+        // findIndex parcourt le tableau products et va trouver l'id = à notre id
+        // si l'index est égale à -1, cela signifie qu'il n'a rien trouvé, dans notre conditionnel on dit:
+        // si index différent de -1 (donc id trouvé) alors on va chercher le tableau avec index
         }    
     }
 })
 
-export const {addProduct, deleteProduct, editProduct} = productSlice.actions
+export const {addProduct, deleteProduct, updateProduct} = productSlice.actions
 export default productSlice.reducer

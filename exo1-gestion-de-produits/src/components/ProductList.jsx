@@ -15,14 +15,12 @@ const ProductList = () => {
                 <th scope="col">Actions</th>
             </tr>
             </thead>
-            <tbody>
-            
+            <tbody className="table-group-divider">
             {
-                products.map((product, key) => (
-                    <ProductItem product={product} key={key} />
+                products.map((product, index) => (
+                    <ProductItem product={product} key={index} />
                 ))
             }
-
             </tbody>
         </table>
         </>
