@@ -43,7 +43,7 @@ const SignForm = () => {
 
     return (
         <>
-            <h3>Suscribe</h3>
+            <h3>Subscribe</h3>
             <hr />
             <form onSubmit={submitFormHandler}>
                 <div>
@@ -54,10 +54,10 @@ const SignForm = () => {
                     <label htmlFor="password">Password : </label>
                     <input className= "form-control" type="password" id="password" ref={passwordRef} />
                 </div>
-            <div className="col mt-3">
+            <div className="col text-end mt-3 mb-2">
                 <button className="btn btn-primary"
-                    onClick={() => dispatch(setAuthMode(authMode === "Se connecter" ? "S'inscrire" : "Se connecter"))}>
-                        {authMode === "Se connecter" ? "S'inscrire" : "Se connecter"}</button>
+                    onClick={() => dispatch(setAuthMode(authMode === "Thanks for your subscription !" ? "Subscribe" : "Thanks for your subscription !"))}>
+                        {authMode === "Thanks for your subscription !" ? "Subscribe" : "Thanks for your subscription !"}</button>
             </div>
             </form>
         </>

@@ -10,7 +10,7 @@ const RecipeItem = (props) => {
     // const prepTimeRef = useRef()
     // const ingredientsRef = useRef()
     // const [update, setUpdate] = useState(false)
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     // const updateRecipeHandler = (event) => {
     //     event.preventDefault()
@@ -36,25 +36,30 @@ const RecipeItem = (props) => {
 
     return ( 
     <>
-        <div className="bg-dark border border-info">
-            <div>
-                <h6>{recipe.title}</h6>
-            </div>
-            <div>
-                {recipe.prepTime} {recipe.cookTime}
+        <div className="bg-dark border rounded border-info mt-3 mb-3 ">
+            <div className="row m-3">
+                <div className="col">
+                    <h3>{recipe.title}</h3>
+                </div>
+                <div className="col text-end">
+                    <i class="bi bi-fire"></i> {recipe.prepTime}min
+                    <i class="bi bi-stopwatch-fill ms-3"></i> {recipe.cookTime}min
+                </div>
             </div>
             <hr />
-            <div>
-                <p><b>Ingredients</b></p>
+            <div className="m-3">
+                <p><b>Ingredients:</b></p>
                 {recipe.ingredients}
             </div>
-            <div>
-                <p><b>Instructions</b></p>
+            <div className="m-3">
+                <p><b>Instructions:</b></p>
                 {recipe.instructions}
             </div>
             <hr />
-            {/* <button onClick={() => setUpdate(!update)} className="btn btn-warning">Edit</button>
-            <button onClick={() => dispatch(deleteRecipe(recipe.id))} className="btn btn-danger">Delete</button> */}
+            <div className="text-end">
+                <button className="btn btn-warning me-2 mb-3"><i class="bi bi-pencil-square"></i> Edit</button>
+                <button onClick={() => dispatch(deleteRecipe(recipe.id))} className="btn btn-danger me-3 mb-3"><i class="bi bi-trash3-fill"></i> Delete</button>
+            </div>
         </div>  
     </> 
     );
