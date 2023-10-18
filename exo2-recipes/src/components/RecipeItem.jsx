@@ -1,60 +1,52 @@
 import { useRef, useState } from "react"
-import { useDispatch } from "react-redux";
-import { deleteRecipe, updateRecipe } from "./recipe/recipeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedRecipe } from "./recipe/recipeSlice";
+
 
 const RecipeItem = (props) => {
     const recipe = props.recipe
-    // const titleRef = useRef()
-    // const instructionsRef = useRef()
-    // const cookTimeRef = useRef()
-    // const prepTimeRef = useRef()
-    // const ingredientsRef = useRef()
-    // const [update, setUpdate] = useState(false)
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.auth.user)
 
-    // const updateRecipeHandler = (event) => {
-    //     event.preventDefault()
+    const editRecipeHandler = () => {
+        dispatch(setSelectedRecipe(recipe))
+    }
 
-    //     const newTitle = titleRef.current.value ? titleRef.current.value : recipe.title 
-    //     const newInstructions = instructionsRef.current.value ? instructionsRef.current.value : recipe.instructions 
-    //     const newCookTime = cookTimeRef.current.value ? cookTimeRef.current.value : recipe.cookTime 
-    //     const newPrepTime = prepTimeRef.current.value ? prepTimeRef.current.value : recipe.prepTime
-    //     const newIngredients = ingredientsRef.current.value ? ingredientsRef.current.value : recipe.ingredients
-
-    //     const updatedRecipe =  {
-    //         id: recipe.id,
-    //         title: newTitle, 
-    //         instructions: newInstructions, 
-    //         cookTime: newCookTime, 
-    //         prepTime: newPrepTime,
-    //         ingredients: newIngredients 
-    //     }
-
-    //     dispatch(updatedRecipe(updatedRecipe))
-    //     setUpdate(!update)
-    // }
+    const deleteRecipeHandler = () => {
+        dispatch(setSelectedRecipe(recipe))
+    }
 
     return ( 
     <>
-        <div className="bg-dark border border-info">
-            <div>
-                <h6>{recipe.title}</h6>
+        <div className="bg-dark border rounded border-info mt-3 p-3">
+            <div className="d-flex align-items-center">
+                <h5 className="">{recipe.title}</h5>            
+                <span className="ms-auto badge border border-warning d-flex align items center"><i className="bi bi-watch"></i>{recipe.prepTime}min</span> 
+                <span className="ms-auto badge border border-danger d-flex align items center"><i className="bi bi-fire"></i>{recipe.cookTime}min</span>
+            <hr />
             </div>
-            <div>
-                {recipe.prepTime} {recipe.cookTime}
+            <div className="row g-3">
+                <div className="col-4">
+                    <h6>Ingredients</h6>
+                    <ul>
+                        {recipe.ingredients?.map(ingr => <li key={ingr.id}>{ingr.name}</li>)}
+                    </ul>
+                    </div>
+            </div>
+            <div className="col-8">
+                <div>
+                    <h6>Instructions</h6>
+                    <p>{recipe.instructions}</p>
+                </div>
             </div>
             <hr />
-            <div>
-                <p><b>Ingredients</b></p>
-                {recipe.ingredients}
-            </div>
-            <div>
-                <p><b>Instructions</b></p>
-                {recipe.instructions}
-            </div>
-            <hr />
-            {/* <button onClick={() => setUpdate(!update)} className="btn btn-warning">Edit</button>
-            <button onClick={() => dispatch(deleteRecipe(recipe.id))} className="btn btn-danger">Delete</button> */}
+            {
+                user &&
+                    <div className="text-end">
+                        <button onClick={() => editRecipeHandler} className="btn btn-warning">Edit</button>
+                        <button onClick={() => deleteRecipeHandler} className="btn btn-danger">Delete</button>
+                    </div>
+            }
         </div>  
     </> 
     );

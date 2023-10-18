@@ -1,11 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ingredients } from './ingredients'
 
 const recipeSlice = createSlice ({
-    name: "recipe",
+    name: "recipes",
     initialState: {
-        recipes: []
+        recipes: [],
+        selectedRecipe : null,
+        ingredients: [...ingredients],
     },
     reducers: {
+        setRecipes: (state, action) => { // set pour mettre les recettes de nos base de données dans notre tableau recipes 
+            state.recipes = action.payload
+        },
+        setSelectedRecipe: (state, action) => {
+            state.selectedRecipe = action.payload
+        },
         addRecipe: (state, action) => {
             const newRecipe = {
                 id: Date.now(),
@@ -18,16 +27,19 @@ const recipeSlice = createSlice ({
             state.recipes.push(newRecipe)
         },
         deleteRecipe: (state, action) => {
-            state.recipes.filter(recipe => recipe.id !== action.payload)
+            let foundRecipe = state.recipes.find(recipe => recipe.id === action.payload.id)
+            if (foundRecipe) {
+                state.recipes = state.recipes.filter(r => r.id !== action.payload.id) 
+            }
         },
         updateRecipe: (state, action) => {
-            const index = state.recipes.findIndex(recipe => recipe.id === action.payload.id)
-            if (index !== -1) {
-                state.recipes[index] = action.payload
+            let foundRecipe = state.recipes.find(recipe => recipe.id === action.payload.id)
+            if (foundRecipe) {
+                state.recipes = [...state.recipes.filter(r => r.id !== action.payload.id), action.payload] // remodifie le tableau recipe avec notre recette modifiée
             }
         }
     }
 })
 
-export const {addRecipe, deleteRecipe, updateRecipe} = recipeSlice.actions
+export const {setRecipes, setSelectedRecipe, addRecipe, deleteRecipe, updateRecipe} = recipeSlice.actions
 export default recipeSlice.reducer

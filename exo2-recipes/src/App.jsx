@@ -12,7 +12,7 @@ function App() {
     <header>
       <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div className="container-fluid">
-          <Link className="navbar-brand" href="#">eRecipes</Link>
+          <Link className="navbar-brand" href="#"><i className="bi bi-cookie me-2"></i>eRecipes</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -30,8 +30,10 @@ function App() {
       </nav>
     </header>
     <main className="container mt-3">
-      <div className="col-10 offset-1 rounded p-3 bg-dark text-light">
+      <div className="row my-3">
+        <div className="col-10 offset-1 rounded p-3 bg-dark text-light">
           <Outlet />
+        </div>
       </div>
     </main>
   </div>

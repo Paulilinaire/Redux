@@ -1,10 +1,12 @@
+import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import { BASE_DB_URL } from "../fireBaseConfig";
-import { useDispatch, useSelector } from "react-redux";
-import { addRecipe } from "./recipe/recipeSlice";
+import { updateRecipe, setSelectedRecipe} from "./recipe/recipeSlice";
 
-function AddRecipe () {
+const EditRecipe = () => {
+    const selectedRecipe = useSelector(state => state.recipes.selectedRecipe)
     const ingredients = useSelector(state => state.recipes.ingredients)
+    const user = useSelector(state => state.auth.user)
     const dispatch = useDispatch()
 
     const titleRef = useRef()
@@ -13,7 +15,6 @@ function AddRecipe () {
     const prepTimeRef = useRef()
     const ingredientsRef = useRef()
 
-    
     const handleSubmit = async (event) => {
         event.preventDefault()
         const selectedIngredients = []
@@ -37,8 +38,8 @@ function AddRecipe () {
 
         if(token) {
             try {
-                const response = await fetch(`${BASE_DB_URL}/Recipes.json?auth=${token}`, {
-                    method: "POST", // action qu'on veut effectuer
+                const response = await fetch(`${BASE_DB_URL}/Recipes/${selectedRecipe.id}.json?auth=${token}`, {
+                    method: "PATCH", // action qu'on veut effectuer
                     headers: {
                         "Content-Type" : "application/json"
                     },
@@ -53,7 +54,7 @@ function AddRecipe () {
                 const data = await response.json() // on récupère nos données
                 console.log(data);
 
-                dispatch(addRecipe({id: data.name, ...newRecipe})) // on recréé un objet dans id qui contiendra notre objet newRecipe
+                dispatch(updateRecipe({id: data.name, ...newRecipe})) // on recréé un objet dans id qui contiendra notre objet newRecipe
 
             } catch (error) {
                 console.error(error.message);
@@ -61,84 +62,48 @@ function AddRecipe () {
         }
     }
 
-
     return ( 
         <>  
             <form action="" onSubmit={handleSubmit}>
-             <h1>Add Recipe</h1>
+             <h1>Edit Recipe</h1>
              <div className="row mt-3 mb-3">
              <div className="col-6">
                 <label htmlFor="titleRecipe">Recipe name:</label>
-                <input className="form-control" type="text" required ref={titleRef}></input>
+                <input className="form-control" type="text" required ref={titleRef} defaultValue={selectedRecipe.title}></input>
             </div>
                 <div className="col-3">
                     <label htmlFor="cookTimeRecipe">Cooking time (min):</label>
-                    <input className="form-control" type="number" required min={1} ref={cookTimeRef}></input>
+                    <input className="form-control" type="number" required min={1} ref={cookTimeRef} defaultValue={selectedRecipe.cookTime}></input>
                 </div>
                 <div className="col-3">
                     <label htmlFor="prepTimeRecipe">Preparation time (min):</label>
-                    <input className="form-control" type="number" required min={1} ref={prepTimeRef}></input>
+                    <input className="form-control" type="number" required min={1} ref={prepTimeRef} defaultValue={selectedRecipe.prepTime}></input>
                 </div>
             </div>
              <div className="mb-3">
                 <label htmlFor="instructionsRecipe">Insctructions:</label>
-                <textarea className="form-control" cols={30} rows={10} required ref={instructionsRef}></textarea>
+                <textarea className="form-control" cols={30} rows={10} required ref={instructionsRef} defaultValue={selectedRecipe.instructions}></textarea>
             </div>
              <div className="mb-3">
                 <label htmlFor="ingredientsRecipe">Ingredients:</label>
-                <select name='ingredients' id="ingredients" className="form-select" required multiple ref={ingredientsRef}>
+                <select 
+                    name='ingredients' 
+                    id="ingredients" 
+                    className="form-select" 
+                    required 
+                    multiple 
+                    ref={ingredientsRef}
+                    defaultValue={selectedRecipe.ingredients?.map(i => i.id)}
+                >
                     {ingredients.map(ingredient => <option key={ingredient.id} value={ingredient.id}>{ingredient.name}</option>)}
                 </select>
             </div>
             <div className="text-end mt-3">
-                <button className= "btn btn-success">Add recipe</button>
+                <button className= "btn btn-success">Edit recipe</button>
             </div>
             </form>
         </>
      );
 }
-
-export default AddRecipe;
-
-
-// useEffect(() => {
-//     if(id != null){
-//         axios.get(`http://localhost:3002/recipes/${id}`)
-//         .then((response => {
-//             titleRef.current.value = response.data.title
-//             instructionsRef.current.value = response.data.instructions
-//             cookTimeRef.current.value = response.data.cookTime
-//             prepTimeRef.current.value = response.data.prepTime
-//             ingredientsRef.current.value = response.data.ingredients
-//         })
-//         )
-//     }
-// },[id])
-
-// const handleSubmit = () => {
-//     if(id != null){
-//         axios.put(`http://localhost:3002/recipes/${id}`,{ 
-//             title : titleRef.current.value, 
-//             instructions: instructionsRef.current.value,
-//             cookTime : cookTimeRef.current.value,
-//             prepTime : prepTimeRef.current.value,
-//             ingredients : ingredientsRef.current.value,
-//           })
-//         .then(response => {
-//             console.log(response.data)
-//             navigate("/")
-//         })
-//     }else{
-//         axios.post('http://localhost:3002/recipes',{ 
-//             title : titleRef.current.value, 
-//             instructions: instructionsRef.current.value,
-//             cookTime : cookTimeRef.current.value,
-//             prepTime : prepTimeRef.current.value,
-//             ingredients : ingredientsRef.current.value,
-//           })
-//         .then(response => {
-//             console.log(response.data)
-//             navigate("/")
-//         })
-//     }
-// }
+ 
+export default EditRecipe;
