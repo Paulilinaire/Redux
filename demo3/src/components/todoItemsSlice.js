@@ -14,6 +14,24 @@ export const fetchTodos = createAsyncThunk(
     }
 )
 
+export const postTodo = createAsyncThunk(
+    "todoItems/postTodo",
+    async (newTodo) => {
+        const response = await fetch(BASE_DB_URL + "/TodoList.json", {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application.json"
+            },
+            body: JSON.stringify(newTodo)
+        })
+        const data = await response.json()
+        return {
+            id: data.name,
+            ...newTodo
+        }
+    }
+)
+
 const todoItemsSlice = createSlice({
     name: "todoItems", // même nom que dans "todoItems/fetchTodos"
     initialState: {
@@ -28,10 +46,13 @@ const todoItemsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchTodos.fulfilled, (state, action) => { //quand fetchTodos sera finie, nous remplacons ce qui été dans state.todos par ce qui a été généré
             state.todos = action.payload
+            console.log(state.todos);
         })
-        builder.addCase(fetchTodos.rejected, () => {
-            //on n'est pas limité à un reducer et une action
+        builder.addCase(fetchTodos.fulfilled, (state, action) => {
+            state.todos.push(action.payload)
         })
     }
 })
+
+export default todoItemsSlice.reducer
 
