@@ -12,7 +12,11 @@ function App() {
     <header>
       <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div className="container-fluid">
+<<<<<<< HEAD
           <Link className="navbar-brand" href="#"><i className="bi bi-cookie me-2"></i>eRecipes</Link>
+=======
+          <Link className="navbar-brand" href="#"><i class="bi bi-cookie me-2"></i>eRecipes</Link>
+>>>>>>> 59c11620cc35e85392e38d83e22e7c605a0f5608
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
