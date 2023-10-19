@@ -46,7 +46,7 @@ const AddAlbumForm = () => {
                     <input type="text" className="form-control" required ref={artistRef}/>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="score" className="form-label">Score:</label>
+                    <label htmlFor="score" className="form-label">Score(/5):</label>
                     <input type="number" className="form-control" required min={1} ref={scoreRef}/>
                 </div>
                 <div className="mb-3">

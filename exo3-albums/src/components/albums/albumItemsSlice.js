@@ -110,7 +110,7 @@ const albumItemsSlice = createSlice({
         // delete album
         builder.addCase(deleteAlbum.fulfilled, (state, action) => { 
             console.log("test");
-            let foundAlbum = state.albums.find(album => album.id === action.payload)
+            let foundAlbum = state.albums.find(a => a.id === action.payload)
             if (foundAlbum) {
                 state.albums = state.albums.filter(a => a.id !== action.payload)
             }

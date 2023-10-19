@@ -7,6 +7,7 @@ const AlbumDisplay = (props) => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.user)
 
+
     const editAlbumHandler = () => {
         dispatch(setFormMode("edit"))
         dispatch(setSelectedAlbum(album))
@@ -19,7 +20,7 @@ const AlbumDisplay = (props) => {
     
     return ( 
         <>
-            <div className="col-3 bg-dark rounded border border-secondary text-light p-2 m-2">
+            <div className="col-3 bg-dark rounded border border-secondary text-light p-2">
                 <h5 className="mb-2">{album.title}</h5>
                 <div className="text-center">
                     <img className="card-image w-100 mb-3" src={album.coverAlbumUrl} alt="" />

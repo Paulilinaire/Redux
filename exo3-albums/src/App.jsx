@@ -8,6 +8,8 @@ import { BASE_DB_URL } from './fireBaseConfig'
 import { useEffect } from 'react'
 import EditAlbumForm from './components/albums/EditAlbumForm'
 import DeleteAlbumForm from './components/albums/DeleteAlbumForm'
+import { setFilter } from './components/filter/filterSlice'
+import FilteredAlbums from './components/filter/FilteredAlbums'
 
 
 
@@ -15,8 +17,9 @@ function App() {
   const user = useSelector(state => state.auth.user)
   const formMode = useSelector(state => state.albums.formMode)
   const albums = useSelector(state => state.albums.albums)
+  const filter = useSelector(state => state.albumFilter.filter)
   const dispatch = useDispatch()
-  
+
   const refreshAlbums = async () => {
     try {
       const response = await fetch(`${BASE_DB_URL}/Albums.json`)
@@ -60,17 +63,16 @@ function App() {
               <h3>Albums</h3>
               {user && <button className='btn btn-success' onClick={() => dispatch(setFormMode("add"))}><i class="bi bi-plus-circle me-2"></i>Add</button>}
             </div>
-              <div className= "col-3">
-                <label htmlFor="filter">filtered by:</label>
-                <select className="form-select">
-                  <option selected>Select a filter</option>
-                  <option value="title">Title</option>
-                  <option value="artist">Artist</option>
-                  <option value="score">Score</option>
-                </select>
-              </div>
+            <div>
+                <input
+                    onChange={(e) => dispatch(setFilter(e.target.value))}
+                    value={filter}
+                    placeholder="filter by title"
+                  ></input>
+                  <FilteredAlbums />
+            </div>
             <hr />
-            <div className="d-flex align-items-center">
+            <div className="d-flex flex-wrap align-items-center">
             {
               albums.length === 0 ? (
                 <p>There is no album...</p>
