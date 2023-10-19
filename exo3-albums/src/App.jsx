@@ -58,7 +58,7 @@ function App() {
       </header>
       <main className='container'>
         <div className='row my-3'>
-          <div className='col-12 offset-1 bg-dark rounded text-light p-3'>
+          <div className='col-12 bg-dark rounded text-light p-3'>
             <div className='d-flex justify-content-between align-items-center'>
               <h3>Albums</h3>
               {user && <button className='btn btn-success' onClick={() => dispatch(setFormMode("add"))}><i class="bi bi-plus-circle me-2"></i>Add</button>}

@@ -46,7 +46,7 @@ const SignForm = () => {
             <h3>Subscribe</h3>
             <hr />
             <form onSubmit={submitFormHandler}>
-                <div>
+                <div className="col">
                     <label htmlFor="email">Email : </label>
                     <input className= "form-control" type="email" id="email" ref={emailRef} />
                 </div>

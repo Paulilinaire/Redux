@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthMode, setUser } from "./authSlice";
+import { setAuthMode } from "./authSlice";
 import { useRef } from "react";
-import { SIGN_UP_URL, SIGN_IN_URL } from "../../fireBaseConfig";
+import { postSetUserSignin,postSetUserSignup } from "./authSlice";
 
 const SignForm = () => {
     const authMode = useSelector(state => state.auth.authMode)
@@ -13,39 +13,13 @@ const SignForm = () => {
     const submitFormHandler = async (event) => {
         event.preventDefault()
 
-        const email = emailRef.current.value
-        const password = passwordRef.current.value
-
+        console.log("envoyer data");
         const credentials = {
-            email,
-            password,
+            email : emailRef.current.value,
+            password: passwordRef.current.value,
             returnSecureToken: true
         }
-
-        const URL = authMode === "Log in" ? SIGN_IN_URL : SIGN_UP_URL
-
-        try {
-            const response = await fetch(URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(credentials)
-            })
-
-            if(!response.ok) {
-                throw new Error("Something went wrong during the " + authMode)
-            }
-
-            const data = await response.json()
-            console.log(data);
-
-            localStorage.setItem("token", data.idToken)
-            dispatch(setUser(data))
-            dispatch(setAuthMode(""))
-        } catch(error) {
-            console.error(error.message);
-        }
+        {authMode === "Log in" ?  (dispatch(postSetUserSignin(credentials))) : (dispatch(postSetUserSignup(credentials)))}
 
     }
 
