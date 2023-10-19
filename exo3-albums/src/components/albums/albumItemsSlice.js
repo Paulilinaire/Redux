@@ -7,6 +7,7 @@ export const fetchAlbums = createAsyncThunk(
         const response = await fetch(BASE_DB_URL + "/Albums.json")
         const data = await response.json()
         const albums = []
+        console.log(data);
         for (const key in data){
             albums.push({id: key, ...data[key]})
         }
@@ -17,7 +18,8 @@ export const fetchAlbums = createAsyncThunk(
 export const postAlbum = createAsyncThunk(
     "albumItems/postAlbum",
     async (newAlbum) => {
-        const response = await fetch(BASE_DB_URL + "/Albums.json", {
+        const token = localStorage.getItem("token")
+        const response = await fetch(BASE_DB_URL + `/Albums.json?auth=${token}`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application.json"
@@ -26,39 +28,60 @@ export const postAlbum = createAsyncThunk(
             })
             const data = await response.json()
             return {
-                id: data.name,
-                ...newAlbum
+                id: data.name, ...newAlbum
         }
     }
 )
 
-// export const deleteAlbum = createAsyncThunk(
-//     "albumItems/deleteAlbum",
-//     async(event) => {
-//         const response = await fetch(`${BASE_DB_URL}/recipes/${selectedAlbum.id}.json?auth=${token}`, {
-//             method: "DELETE"
-//         })
+export const patchAlbum = createAsyncThunk(
+    "albumItems/patchAlbum",
+    async (newAlbum) => {
+        const selectedAlbum = null
+        const token = localStorage.getItem("token")
+        const response = await fetch(BASE_DB_URL + `/Albums/${selectedAlbum.id}.json?auth=${token}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type" : "application.json"
+            },
+                body: JSON.stringify(newAlbum)
+            })
+            const data = await response.json()
+            return {
+                ...data, id: selectedAlbum.id
+        }
+    }
+)
 
-//         if(!response.ok) {
-//             throw new Error("Something went wrong during the DELETE recipe request")
-//         }
+export const deleteAlbum = createAsyncThunk(
+    "albumItems/deleteAlbum",
+    async(deleteAlbum) => {
+        const selectedAlbum = null
+        const token = localStorage.getItem("token")
+        const response = await fetch(`${BASE_DB_URL}/recipes/${selectedAlbum.id}.json?auth=${token}`, {
+            method: "DELETE"
+        })
+        const data = response.json(deleteAlbum)
+        return
+            deleteAlbum(selectedAlbum)
+    }
 
-//         const data = response.json()
-//         return
-//             deleteAlbum(selectedAlbum)
-//     }
-
-// )
+)
 
 const albumItemsSlice = createSlice({
     name: "albumItems",
-    initialSate: {
+    initialState: {
         formMode: "",
-        albums: []
+        albums: [],
+        selectedAlbum: null,
+        isLoading: false,
+        error: null
     },
     reducers: {
         setFormMode:(state, action) => {
             state.formMode = action.payload
+        },
+        setSelectedAlbum: (state, action) => {
+            state.selectedAlbum = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -70,22 +93,22 @@ const albumItemsSlice = createSlice({
         builder.addCase(postAlbum.fulfilled, (state, action) => { 
             state.albums.push(action.payload)
         })
-        // // edit album
-        // builder.addCase(patchAlbum.fulfilled, (state, action) => { 
-        //     let foundAlbum = state.albums.find(album => album.id === action.payload.id)
-        //     if (foundAlbum) {
-        //         state.albums = [...state.albums.filter(a => a.id !== action.payload.id), action.payload]
-        //     }
-        // })
-        // // delete album
-        // builder.addCase(deletehAlbums.fulfilled, (state, action) => { 
-        //     let foundAlbum = state.albums.find(album => album.id === action.payload.id)
-        //     if (foundAlbum) {
-        //         state.albums = state.albums.filter(a => a.id !== action.payload.id)
-        //     }
-        // })        
+        // edit album
+        builder.addCase(patchAlbum.fulfilled, (state, action) => { 
+            let foundAlbum = state.albums.find(album => album.id === action.payload.id)
+            if (foundAlbum) {
+                state.albums = [...state.albums.filter(a => a.id !== action.payload.id), action.payload]
+            }
+        })
+        // delete album
+        builder.addCase(deleteAlbum.fulfilled, (state, action) => { 
+            let foundAlbum = state.albums.find(album => album.id === action.payload.id)
+            if (foundAlbum) {
+                state.albums = state.albums.filter(a => a.id !== action.payload.id)
+            }
+        })        
     }
 })
 
 export default albumItemsSlice.reducer
-export const {setFormMode} = albumItemsSlice.actions
+export const {setFormMode, setSelectedAlbum} = albumItemsSlice.actions

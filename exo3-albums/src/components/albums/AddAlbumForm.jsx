@@ -4,45 +4,57 @@ import { postAlbum } from "./albumItemsSlice";
 
 const AddAlbumForm = () => {
     const dispatch = useDispatch()
+
     const titleRef = useRef()
     const releaseDateRef = useRef()
     const artistRef = useRef()
-    const albumCoverUrlRef = useRef()
     const scoreRef = useRef()
+    const priceRef = useRef()
+    const coverAlbumUrlRef = useRef()
 
-    const addAlbum = (event) => {
+    const addAlbumHandler = (event) => {
         event.preventDefault()
 
         const newAlbum = {
             title: titleRef.current.value,
             releaseDate: releaseDateRef.current.value,
             artist: artistRef.current.value,
-            albumCoverUrl: albumCoverUrlRef.current.value,
-            score: scoreRef.current.value
+            score: +scoreRef.current.value,
+            price: +priceRef.current.value,
+            coverAlbumUrl: coverAlbumUrlRef.current.value
         }
         dispatch(postAlbum(newAlbum))
+        console.log(newAlbum);
     }
 
     return ( 
         <>
-            <h1>Add Album</h1>
+            <h3>Add Album</h3>
             <hr />
-            <form onSubmit={addAlbum}>
+            <form onSubmit={addAlbumHandler}>
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Title:</label>
                     <input type="text" className="form-control" required ref={titleRef}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="releaseDate" className="form-label">Release date:</label>
-                    <input type="number" className="form-control" required min={1} ref={releaseDateRef}/>
+                    <input type="date" className="form-control" required ref={releaseDateRef}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="artist" className="form-label">Artist:</label>
-                    <input type="number" className="form-control" required min={1} ref={artistRef}/>
+                    <input type="text" className="form-control" required ref={artistRef}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="score" className="form-label">Score:</label>
                     <input type="number" className="form-control" required min={1} ref={scoreRef}/>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="price" className="form-label">Price:</label>
+                    <input type="number" className="form-control" required min={1} ref={priceRef}/>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="coverAlbumUrl" className="form-label">Cover album:</label>
+                    <input type="text" className="form-control" required min={1} ref={coverAlbumUrlRef}/>
                 </div>
                 <div className="text-end">
                     <button className="btn btn-success">Add</button>

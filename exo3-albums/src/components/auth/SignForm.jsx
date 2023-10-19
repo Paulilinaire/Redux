@@ -22,7 +22,7 @@ const SignForm = () => {
             returnSecureToken: true
         }
 
-        const URL = authMode === "Se connecter" ? SIGN_IN_URL : SIGN_UP_URL
+        const URL = authMode === "Log in" ? SIGN_IN_URL : SIGN_UP_URL
 
         try {
             const response = await fetch(URL, {
@@ -54,20 +54,22 @@ const SignForm = () => {
             <h3>{authMode}</h3>
             <hr />
             <form onSubmit={submitFormHandler}>
-                <div>
+                <div className="mb-3">
                     <label htmlFor="email">Email: </label>
-                    <input type="email" id="email"  ref={emailRef}/>
+                    <input className="form-control" type="email" id="email"  ref={emailRef}/>
                 </div>
-                <div>
+                <div className="mb-3">
                     <label htmlFor="password">Password: </label>
-                    <input type="password" id="password" ref={passwordRef} />
+                    <input className="form-control" type="password" id="password" ref={passwordRef} />
                 </div>
-                <button>{authMode}</button>
+                <div className="text-center mt-3">
+                    <button className="btn btn-outline-primary me-2">{authMode}</button>
+                    <button className="btn btn-primary"
+                        onClick={() => dispatch(setAuthMode(authMode === "Log in" ? "Sign up" : "Log in"))}>
+                            {authMode === "Log in" ? "Sign up" : "Log in"}
+                    </button>
+                </div>
             </form>
-            <button 
-                onClick={() => dispatch(setAuthMode(authMode === "Log in" ? "Sign up" : "Log in"))}>
-                    {authMode === "Log in" ? "Sign up" : "Log in"}
-            </button>
         </>
      );
 }
