@@ -8,36 +8,37 @@ const AlbumDisplay = (props) => {
     const user = useSelector(state => state.auth.user)
 
     const editAlbumHandler = () => {
-        dispatch(setSelectedAlbum(album))
         dispatch(setFormMode("edit"))
+        dispatch(setSelectedAlbum(album))
     }
 
     const deleteAlbumHandler = () => {
-        dispatch(setSelectedAlbum(album))
         dispatch(setFormMode("delete"))
+        dispatch(setSelectedAlbum(album))
     }
     
     return ( 
         <>
             <div className="col-3 bg-dark rounded border border-secondary text-light p-2 m-2">
-                <h5 className="card-title">{album.title}</h5>
-                <hr />
-                    <img src={album.coverAlbumUrl} alt="" />
-                <ul className="text-center">
-                    <li><strong>Release date:</strong> {album.releaseDate}</li>
+                <h5 className="mb-2">{album.title}</h5>
+                <div className="text-center">
+                    <img className="card-image w-100 mb-3" src={album.coverAlbumUrl} alt="" />
+                </div>
+                <div className="text-center">
+                    <span><strong>Release date:</strong> {album.releaseDate}</span>
                     <hr />
-                    <li><strong>Artist:</strong> {album.artist}</li>
+                    <span><strong>Artist:</strong> {album.artist}</span>
                     <hr />
-                    <li><strong>Score:</strong> {album.score}</li>
+                    <span><strong>Score:</strong> {album.score}/5</span>
                     <hr />
-                    <li><strong>Price:</strong> {album.price}$</li>
+                    <span><strong>Price:</strong> {album.price}$</span>
                     <hr />
-                </ul>
+                </div>
                 {
                 user &&
                     <div className="text-end">
-                        <button className="btn btn-warning me-2" onClick={() => editAlbumHandler()}>Edit</button>
-                        <button className="btn btn-danger" onClick={() => deleteAlbumHandler()}>Delete</button>
+                        <button className="btn btn-warning me-2" onClick={() => editAlbumHandler()}><i class="bi bi-pencil-square me-1"></i>Edit</button>
+                        <button className="btn btn-danger" onClick={() => deleteAlbumHandler()}><i class="bi bi-trash3 me-1"></i>Delete</button>
                     </div>
                 }
             </div>

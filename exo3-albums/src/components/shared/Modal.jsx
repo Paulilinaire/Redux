@@ -10,7 +10,7 @@ const Modal = (props) => {
         <div className={classes.modal}>
             <div className={classes.modalContent}>
                 <div className="text-end">
-                    <button onClick={handleBackgroundClick} className="btn btn-danger">X</button>
+                    <button onClick={handleBackgroundClick} className="btn btn-danger"><i class="bi bi-x-lg"></i></button>
                 </div>
                 {props.children}
             </div>

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthMode, setUser } from "./authSlice";
 import { useRef } from "react";
-import { SIGN_IN_URL, SIGN_UP_URL } from "../../fireBaseConfig";
+import { SIGN_UP_URL, SIGN_IN_URL } from "../../fireBaseConfig";
 
 const SignForm = () => {
     const authMode = useSelector(state => state.auth.authMode)

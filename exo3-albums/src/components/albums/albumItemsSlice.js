@@ -26,6 +26,9 @@ export const postAlbum = createAsyncThunk(
             },
                 body: JSON.stringify(newAlbum)
             })
+            if(!response.ok) {
+                throw new Error("Something went wrong during the POST recipe request")
+            }
             const data = await response.json()
             return {
                 id: data.name, ...newAlbum
@@ -33,48 +36,52 @@ export const postAlbum = createAsyncThunk(
     }
 )
 
+
 export const patchAlbum = createAsyncThunk(
     "albumItems/patchAlbum",
-    async (newAlbum) => {
-        const selectedAlbum = null
+    async (album) => {
         const token = localStorage.getItem("token")
-        const response = await fetch(BASE_DB_URL + `/Albums/${selectedAlbum.id}.json?auth=${token}`, {
+        const response = await fetch(BASE_DB_URL + `/Albums/${album.id}.json?auth=${token}`, {
             method: "PATCH",
             headers: {
-                "Content-Type" : "application.json"
+                "Content-Type" : "application.json",
             },
-                body: JSON.stringify(newAlbum)
-            })
-            const data = await response.json()
-            return {
-                ...data, id: selectedAlbum.id
+            body: JSON.stringify(album)
+        })
+        if(!response.ok) {
+            throw new Error("Something went wrong during the PATCH recipe request")
+        }
+        const data = await response.json()
+        return {
+            id: data.title, 
+            ...album
         }
     }
-)
-
-export const deleteAlbum = createAsyncThunk(
-    "albumItems/deleteAlbum",
-    async(deleteAlbum) => {
-        const selectedAlbum = null
-        const token = localStorage.getItem("token")
-        const response = await fetch(`${BASE_DB_URL}/recipes/${selectedAlbum.id}.json?auth=${token}`, {
-            method: "DELETE"
-        })
-        const data = response.json(deleteAlbum)
-        return
-            deleteAlbum(selectedAlbum)
-    }
-
-)
+    )
+    
+    export const deleteAlbum = createAsyncThunk(
+        "albumItems/deleteAlbum",
+        async(selectedAlbum) => {      
+            const token = localStorage.getItem("token")
+            const response = await fetch(BASE_DB_URL + `/Albums/${selectedAlbum.id}.json?auth=${token}`, {
+                method: "DELETE"
+            })
+            if(!response.ok) {
+                throw new Error("Something went wrong during the DELETE recipe request")
+            }
+            const data = await response.json()
+            return selectedAlbum.id
+    
+        }
+    
+    )
 
 const albumItemsSlice = createSlice({
     name: "albumItems",
     initialState: {
         formMode: "",
         albums: [],
-        selectedAlbum: null,
-        isLoading: false,
-        error: null
+        selectedAlbum: null
     },
     reducers: {
         setFormMode:(state, action) => {
@@ -82,7 +89,7 @@ const albumItemsSlice = createSlice({
         },
         setSelectedAlbum: (state, action) => {
             state.selectedAlbum = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         // set albums
@@ -97,17 +104,18 @@ const albumItemsSlice = createSlice({
         builder.addCase(patchAlbum.fulfilled, (state, action) => { 
             let foundAlbum = state.albums.find(album => album.id === action.payload.id)
             if (foundAlbum) {
-                state.albums = [...state.albums.filter(a => a.id !== action.payload.id), action.payload]
-            }
-        })
-        // delete album
-        builder.addCase(deleteAlbum.fulfilled, (state, action) => { 
-            let foundAlbum = state.albums.find(album => album.id === action.payload.id)
-            if (foundAlbum) {
-                state.albums = state.albums.filter(a => a.id !== action.payload.id)
+                state.albums = [...state.albums.filter(album => album.id !== action.payload.id), action.payload]
             }
         })        
-    }
+        // delete album
+        builder.addCase(deleteAlbum.fulfilled, (state, action) => { 
+            console.log("test");
+            let foundAlbum = state.albums.find(album => album.id === action.payload)
+            if (foundAlbum) {
+                state.albums = state.albums.filter(a => a.id !== action.payload)
+            }
+        })
+        }
 })
 
 export default albumItemsSlice.reducer
