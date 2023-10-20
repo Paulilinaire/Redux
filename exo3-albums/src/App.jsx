@@ -77,7 +77,7 @@ function App() {
               albums.length === 0 ? (
                 <p>There is no album...</p>
               ) : albums.filter((album) =>
-              filterBy ? album.title.toLowerCase().startsWith(filterBy) : true
+              filterBy ? album.title.toLowerCase().includes(filterBy) : true
               ).map(album => <AlbumDisplay key={album.id} album={album} />)
             }
             </div>
