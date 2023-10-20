@@ -81,6 +81,7 @@ const albumItemsSlice = createSlice({
     initialState: {
         formMode: "",
         albums: [],
+        filteredAlbums: [],
         selectedAlbum: null
     },
     reducers: {
@@ -119,4 +120,4 @@ const albumItemsSlice = createSlice({
 })
 
 export default albumItemsSlice.reducer
-export const {setFormMode, setSelectedAlbum} = albumItemsSlice.actions
+export const {setFormMode, setSelectedAlbum, setFilteredAlbums}= albumItemsSlice.actions

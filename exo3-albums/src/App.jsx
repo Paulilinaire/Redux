@@ -9,8 +9,6 @@ import { useEffect } from 'react'
 import EditAlbumForm from './components/albums/EditAlbumForm'
 import DeleteAlbumForm from './components/albums/DeleteAlbumForm'
 import { setFilter } from './components/filter/filterSlice'
-import FilteredAlbums from './components/filter/FilteredAlbums'
-
 
 
 function App() {
@@ -19,6 +17,8 @@ function App() {
   const albums = useSelector(state => state.albums.albums)
   const filter = useSelector(state => state.albumFilter.filter)
   const dispatch = useDispatch()
+  const filterBy = useSelector(state => state.albumFilter.filter)
+
 
   const refreshAlbums = async () => {
     try {
@@ -58,7 +58,7 @@ function App() {
       </header>
       <main className='container'>
         <div className='row my-3'>
-          <div className='col-12 bg-dark rounded text-light p-3'>
+          <div className='col-12 bg-dark bg-gradient rounded text-light p-3'>
             <div className='d-flex justify-content-between align-items-center'>
               <h3>Albums</h3>
               {user && <button className='btn btn-success' onClick={() => dispatch(setFormMode("add"))}><i class="bi bi-plus-circle me-2"></i>Add</button>}
@@ -66,17 +66,19 @@ function App() {
             <div>
                 <input
                     onChange={(e) => dispatch(setFilter(e.target.value))}
+                    type="text"
                     value={filter}
                     placeholder="filter by title"
                   ></input>
-                  <FilteredAlbums />
             </div>
             <hr />
             <div className="d-flex flex-wrap align-items-center">
             {
               albums.length === 0 ? (
                 <p>There is no album...</p>
-              ) : albums.map(album => <AlbumDisplay key={album.id} album={album} />)
+              ) : albums.filter((album) =>
+              filterBy ? album.title.toLowerCase().startsWith(filterBy) : true
+              ).map(album => <AlbumDisplay key={album.id} album={album} />)
             }
             </div>
           </div>

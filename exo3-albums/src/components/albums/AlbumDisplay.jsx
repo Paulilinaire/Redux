@@ -20,7 +20,8 @@ const AlbumDisplay = (props) => {
     
     return ( 
         <>
-            <div className="col-3 bg-dark rounded border border-secondary text-light p-2">
+        
+            <div className="col-3 bg-dark bg-gradient rounded border border-secondary text-light p-2">
                 <h5 className="mb-2">{album.title}</h5>
                 <div className="text-center">
                     <img className="card-image w-100 mb-3" src={album.coverAlbumUrl} alt="" />
